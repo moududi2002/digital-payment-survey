@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model SurveyResponse {
+  id                String   @id @default(uuid()) @db.Uuid
+  submissionToken   String   @unique @map("submission_token") @db.VarChar(64)
+
+  consent           Boolean
+  gender            String   @db.VarChar(50)
+  ageGroup          String   @map("age_group") @db.VarChar(50)
+  education         String   @db.VarChar(50)
+  universityType    String   @map("university_type") @db.VarChar(50)
+  studyYear         String   @map("study_year") @db.VarChar(50)
+
+  currentlyUsesMfs  Boolean  @map("currently_uses_mfs")
+  mfsServices       String[] @map("mfs_services")
+  usageDuration     String   @map("usage_duration") @db.VarChar(50)
+  usageFrequency    String   @map("usage_frequency") @db.VarChar(50)
+  fraudExperience   String   @map("fraud_experience") @db.VarChar(80)
+
+  answers           Json
+
+  submittedAt       DateTime @default(now()) @map("submitted_at")
+
+  @@index([submittedAt])
+  @@map("survey_responses")
+}
